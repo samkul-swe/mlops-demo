@@ -1,10 +1,13 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from agent import CreditAnalystAgent
 import joblib
 import numpy as np
 import os
 import uvicorn
+
+agent = CreditAnalystAgent()
 
 # Initialize FastAPI
 app = FastAPI(
@@ -278,6 +281,24 @@ def predict_credit_risk(application: CreditApplication):
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
+    
+@app.post("/analyze")
+def ai_analysis(application: CreditApplication):
+    """
+    Get AI-powered analysis of credit application
+    Combines model prediction with AI agent insights
+    """
+    # Get prediction first
+    prediction = predict_credit_risk(application)
+    
+    # Get AI analysis
+    analysis = agent.analyze(application.dict(), prediction)
+    
+    return {
+        "prediction": prediction,
+        "ai_analysis": analysis,
+        "agent_type": "claude-3.5-sonnet" if agent.client else "rule-based"
+    }
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))
