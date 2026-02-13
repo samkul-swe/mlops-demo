@@ -1,331 +1,166 @@
-# 📊 ClarityPay MLOps Demo: Credit Risk Assessment Platform
+# Credit Scoring MLOps Platform
 
-> Production-ready MLOps system for point-of-sale lending with explainable AI
+Production machine learning system for point-of-sale credit decisioning.
 
-![Python](https://img.shields.io/badge/Python-3.10-blue)
-![MLflow](https://img.shields.io/badge/MLflow-2.8-green)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104-teal)
-![Docker](https://img.shields.io/badge/Docker-Ready-blue)
-
-## 🎯 Project Overview
-
-This project demonstrates end-to-end MLOps capabilities for fintech credit scoring:
-
-- ✅ Real-time credit risk prediction API (<200ms latency)
-- ✅ Explainable AI with SHAP values for regulatory compliance
-- ✅ Model monitoring and drift detection
-- ✅ MLflow experiment tracking and model registry
-- ✅ Production-ready Docker deployment
-- ✅ Interactive monitoring dashboard
-
-**Built for:** ClarityPay MLOps Engineer position  
-**Author:** Sampada Kulkarni  
-**Tech Stack:** Python, XGBoost, FastAPI, MLflow, Docker, Evidently AI
+**Live Demo:** https://samkul-swe.github.io/claritypay-mlops-demo  
+**API:** https://claritypay-mlops-demo.onrender.com/docs  
+**Code:** https://github.com/samkul-swe/claritypay-mlops-demo
 
 ---
 
-## 🏗️ Architecture
-┌─────────────────┐
-│   Credit Data   │
-└────────┬────────┘
-│
-┌────────▼────────┐
-│ Feature Eng     │
-│ + Training      │
-│  (XGBoost)      │
-└────────┬────────┘
-│
-┌────────▼────────┐
-│  MLflow         │
-│  Tracking       │
-└────────┬────────┘
-│
-┌────────▼────────┐
-│  FastAPI        │
-│  Inference      │
-│  + SHAP         │
-└────────┬────────┘
-│
-┌────────▼────────┐
-│  Monitoring     │
-│  Dashboard      │
-└─────────────────┘
----
+## What This Is
 
-## 🚀 Quick Start
+An end-to-end MLOps system that makes real-time credit decisions. Built to demonstrate production ML capabilities for fintech lending platforms.
 
-### Option 1: Docker (Recommended)
-```bash
-# Clone repo
-git clone <your-repo-url>
-cd claritypay-mlops-demo
-
-# Start all services
-docker-compose up
-
-# Access services:
-# - API: http://localhost:8000
-# - API Docs: http://localhost:8000/docs
-# - MLflow: http://localhost:5000
-# - Dashboard: http://localhost:8501
-```
-
-### Option 2: Local Development
-```bash
-# Set up environment
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-# Train model
-jupyter notebook notebooks/02_model_training.ipynb
-
-# Run API
-python src/api/main.py
-
-# Run monitoring
-streamlit run src/monitoring/dashboard.py
-```
+**Try it:** Visit the live demo, click a button, see the API make a credit decision in real-time.
 
 ---
 
-## 📋 API Usage
+## What's Built
 
-### Health Check
-```bash
-curl http://localhost:8000/health
+**Credit Scoring Model**
+- XGBoost classifier trained on 10,000 applications
+- 85% accuracy
+- Predicts default risk and recommends loan terms
+
+**Production API**
+- FastAPI serving predictions in <200ms
+- Automatic documentation at `/docs`
+- Input validation and error handling
+- Health monitoring
+
+**Cloud Deployment**
+- Docker containerized
+- Deployed on Render (live 24/7)
+- AWS S3 for model storage
+- Databricks for distributed training
+
+**Explainability**
+- Shows why each decision was made
+- Required for lending compliance (ECOA/FCRA)
+- Identifies top risk factors
+
+---
+
+## How It Works
+```
+1. User submits application data (age, income, debt, etc.)
+   ↓
+2. API validates the input
+   ↓
+3. XGBoost model predicts default risk
+   ↓
+4. System calculates credit score (0-850)
+   ↓
+5. Assigns loan terms based on score (APR, months, payment)
+   ↓
+6. Explains the decision (top factors)
+   ↓
+7. Returns JSON response
 ```
 
-### Credit Decision Request
+**Example:**
 ```bash
-curl -X POST "http://localhost:8000/predict" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "applicant_id": "APP_000001",
-    "age": 35,
-    "annual_income": 65000,
-    "debt_to_income_ratio": 0.35,
-    "num_credit_lines": 5,
-    "num_late_payments": 1,
-    "credit_utilization": 0.45,
-    "months_since_last_delinquency": 24,
-    "num_credit_inquiries": 2,
-    "purchase_amount": 3500
-  }'
-```
+curl -X POST "https://claritypay-mlops-demo.onrender.com/predict" \
+  -d '{"age": 35, "annual_income": 65000, ...}'
 
-### Response
-```json
+# Returns:
 {
-  "applicant_id": "APP_000001",
   "credit_score": 720,
-  "default_probability": 0.1234,
   "approval_recommendation": "APPROVED",
   "recommended_terms": {
-    "approved": true,
     "term_months": 12,
     "apr": 8.99,
     "monthly_payment": 318.73
   },
-  "explanation": [
-    {
-      "feature": "debt_to_income_ratio",
-      "value": 0.35,
-      "impact": -0.15,
-      "direction": "decreases"
-    },
-    {
-      "feature": "num_late_payments",
-      "value": 1,
-      "impact": 0.08,
-      "direction": "increases"
-    }
-  ],
-  "confidence": "HIGH"
+  "explanation": [...]
 }
 ```
 
 ---
 
-## 🎯 Key Features
+## Technology
 
-### 1. Model Training with MLflow
-- Automated experiment tracking
-- Hyperparameter logging
-- Model versioning and registry
-- Feature importance analysis
-
-### 2. Real-Time Inference API
-- FastAPI with automatic documentation
-- Input validation with Pydantic
-- <200ms response time
-- Explainable predictions (SHAP)
-
-### 3. Explainable AI
-- SHAP values for each prediction
-- Top 3 influential features highlighted
-- Regulatory compliance ready (ECOA, FCRA)
-- Adverse action reason generation
-
-### 4. Model Monitoring
-- Data drift detection (Evidently AI)
-- Performance tracking
-- Business metrics dashboard
-- Automated alerting (ready to integrate)
-
-### 5. Production-Ready
-- Docker containerization
-- Docker Compose orchestration
-- Health check endpoints
-- Comprehensive logging
+**ML Stack:** Python, XGBoost, Scikit-learn, MLflow  
+**API:** FastAPI, Pydantic, Uvicorn  
+**Deployment:** Docker, Render  
+**Cloud:** AWS S3, Databricks, MongoDB Atlas  
 
 ---
 
-## 📊 Model Performance
+## MLOps Capabilities Shown
 
-- **AUC-ROC:** 0.8542
-- **Accuracy:** 85.4%
-- **Inference Time:** ~145ms (p95)
-- **Training Samples:** 10,000
-- **Features:** 9
+✅ **Complete ML Lifecycle** - Training → Deployment → Monitoring  
+✅ **Production API** - Real-time inference with documentation  
+✅ **Cloud Integration** - AWS and Databricks  
+✅ **Containerization** - Docker for consistent deployment  
+✅ **Model Monitoring** - Health checks and logging  
+✅ **Explainability** - Compliance-ready decisions  
 
 ---
 
-## 🔍 Monitoring & Observability
+## Cloud Architecture
 
-### Drift Detection
+**AWS S3**
+- Stores model artifacts
+- Data lake for training data
+- Bucket: `s3://claritypay-mlops-demo-data/`
+
+**Databricks**
+- Distributed model training
+- Spark for data processing
+- MLflow integration
+- Community Edition demo completed
+
+**MongoDB** (Code Complete)
+- Prediction logging
+- Statistics tracking
+- Ready for production (requires SSL-compatible hosting)
+
+**Docker + Render**
+- Containerized deployment
+- Auto-scaling ready
+- Currently serving live API
+
+---
+
+## Quick Start
+
+**Try It Online:**
+https://samkul-swe.github.io/claritypay-mlops-demo
+
+**Run Locally:**
 ```bash
-python src/monitoring/drift_detection.py
-```
-Generates HTML report in `monitoring/drift_report.html`
-
-### Dashboard
-```bash
-streamlit run src/monitoring/dashboard.py
-```
-Access at http://localhost:8501
-
-**Dashboard Features:**
-- Model performance metrics
-- Drift detection status
-- Recent predictions
-- System health
-
----
-
-## 📁 Project Structure
-claritypay-mlops-demo/
-├── data/
-│   ├── credit_applications.csv    # Generated dataset
-│   ├── train_reference.csv         # Training data
-│   └── test_data.csv               # Test data
-├── models/
-│   ├── credit_model.pkl            # Trained model
-│   ├── feature_importance.png      # Feature viz
-│   └── MODEL_CARD.md               # Model documentation
-├── notebooks/
-│   ├── 01_data_preparation.ipynb
-│   └── 02_model_training.ipynb
-├── src/
-│   ├── api/
-│   │   └── main.py                 # FastAPI application
-│   └── monitoring/
-│       ├── drift_detection.py      # Drift monitoring
-│       └── dashboard.py            # Streamlit dashboard
-├── monitoring/
-│   ├── drift_report.html           # Latest drift report
-│   └── drift_summary.json          # Drift metrics
-├── docker-compose.yml              # Multi-service setup
-├── Dockerfile                      # API container
-├── requirements.txt                # Dependencies
-└── README.md                       # This file
----
-
-## 🎓 MLOps Capabilities Demonstrated
-
-✅ **Data Engineering:** Synthetic data generation, feature engineering  
-✅ **Model Training:** XGBoost with proper validation  
-✅ **Experiment Tracking:** MLflow integration  
-✅ **Model Serving:** FastAPI with low latency  
-✅ **Explainability:** SHAP for regulatory compliance  
-✅ **Monitoring:** Drift detection and performance tracking  
-✅ **Containerization:** Docker and Docker Compose  
-✅ **Documentation:** Model cards, API docs, README  
-
----
-
-## 🔄 Future Enhancements
-
-- [ ] A/B testing framework
-- [ ] Automated retraining pipeline
-- [ ] Integration with AWS SageMaker
-- [ ] Fairness metrics and bias detection
-- [ ] Multi-model ensemble
-- [ ] Kubernetes deployment
-- [ ] CI/CD pipeline with GitHub Actions
-
----
-
-## 💼 Why This Matters for ClarityPay
-
-**Point-of-Sale Lending Alignment:**
-- Fast credit decisions (<500ms target)
-- Explainable AI for compliance (ECOA, FCRA)
-- Risk-based pricing (different terms by score)
-- Production monitoring from day one
-
-**MLOps Best Practices:**
-- Full ML lifecycle coverage
-- Reproducible experiments
-- Model governance
-- Operational monitoring
-
----
-
-## 🤝 About
-
-**Author:** Sampada Kulkarni  
-**LinkedIn:** [linkedin.com/in/samkul-swe](https://linkedin.com/in/samkul-swe/)  
-**Portfolio:** [samkul-swe/portfolio](https://github.com/samkul-swe/portfolio)  
-**Email:** kulkarni.samp@northeastern.edu
-
-Built to demonstrate MLOps capabilities for the ClarityPay MLOps Engineer position.
-
-**Background:**
-- 3+ years at IBM building monitoring & AIOps platforms
-- Expertise in data integration, containerization, CI/CD
-- MS Computer Science, Northeastern University
-
----
-
-## 📝 License
-
-MIT License - Feel free to use this for learning or demonstration purposes.
-## ☁️ Cloud Architecture
-
-### AWS Integration
-- **S3 Data Lake:** Model artifacts and training data stored in S3
-- **Architecture:** Designed for AWS deployment (Lambda, SageMaker, ECS)
-- **Scalability:** Ready to scale with AWS services
-```bash
-# Current S3 structure
-s3://claritypay-mlops-demo-data/
-├── models/
-│   └── credit_model.pkl
-└── data/
-    └── train_reference.csv
+git clone https://github.com/samkul-swe/claritypay-mlops-demo.git
+cd claritypay-mlops-demo
+docker build -t credit-scoring .
+docker run -p 8000:8000 credit-scoring
+# Visit: http://localhost:8000/docs
 ```
 
-### Deployment Options
-- **Lambda:** Serverless inference (current: Render)
-- **SageMaker:** Managed ML platform
-- **ECS/Fargate:** Container orchestration
+---
 
-### Databricks Integration
-- **Platform:** Databricks Community Edition
-- **MLflow:** Native integration for experiment tracking
-- **Notebooks:** Interactive model development and training
-- **Spark:** Distributed data processing ready
+## Project Structure
+```
+├── src/api/main.py           # FastAPI application
+├── models/credit_model.pkl   # Trained model
+├── Dockerfile                 # Container config
+├── requirements.txt           # Dependencies
+└── index.html                 # Demo interface
+```
 
-**Notebook:** Credit scoring model training with MLflow tracking
-**Environment:** Databricks Runtime with MLlib and XGBoost
+---
+
+## Author
+
+**Sampada Kulkarni**  
+📧 kulkarni.samp@northeastern.edu  
+🔗 [linkedin.com/in/samkul-swe](https://linkedin.com/in/samkul-swe)
+
+Built to demonstrate production MLOps capabilities for fintech ML infrastructure.
+
+**Background:** 3 years at IBM building AIOps platforms (monitoring, deployment, data integration)
+
+---
+
+MIT License
