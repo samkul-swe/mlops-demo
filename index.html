@@ -3,87 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MLOps Credit Scoring Platform</title>
+    <title>Credit Scoring MLOps Platform</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background: #f5f7fa;
-            color: #1a202c;
+            color: #2d3748;
         }
-        
         .header {
             background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
             color: white;
-            padding: 48px 24px;
+            padding: 60px 24px 48px;
             text-align: center;
         }
-        
         .header h1 {
-            font-size: 2.2em;
+            font-size: 2.4em;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
-        
         .header p {
             font-size: 1.1em;
             opacity: 0.9;
+            margin-bottom: 24px;
         }
-        
+        .links {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        .link-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        .link-btn:hover {
+            background: rgba(255,255,255,0.25);
+        }
         .container {
             max-width: 900px;
-            margin: -32px auto 48px;
-            padding: 0 24px;
+            margin: -32px auto 60px;
+            padding: 0 20px;
         }
-        
         .card {
             background: white;
             border-radius: 12px;
             padding: 32px;
             margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
         }
-        
         .card h2 {
-            font-size: 1.5em;
-            margin-bottom: 16px;
+            font-size: 1.6em;
+            margin-bottom: 20px;
             color: #2d3748;
         }
-        
-        /* Demo Section */
-        .demo-buttons {
+        .flow {
+            display: grid;
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .flow-step {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #2d3748;
+        }
+        .flow-step h3 {
+            color: #2d3748;
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+        .flow-step p {
+            color: #4a5568;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+        .demo-box {
+            background: #f7fafc;
+            padding: 24px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .demo-btns {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             margin-bottom: 16px;
             flex-wrap: wrap;
         }
-        
         .demo-btn {
             background: #edf2f7;
             border: 1px solid #cbd5e0;
-            padding: 10px 18px;
+            padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
             font-size: 14px;
         }
-        
         .demo-btn:hover {
             background: #e2e8f0;
         }
-        
         textarea {
             width: 100%;
-            height: 180px;
+            height: 200px;
             padding: 14px;
             border: 1px solid #cbd5e0;
             border-radius: 8px;
-            font-family: 'Courier New', monospace;
+            font-family: monospace;
             font-size: 13px;
             margin-bottom: 12px;
         }
-        
         .submit-btn {
             background: #2d3748;
             color: white;
@@ -92,133 +124,99 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 15px;
             width: 100%;
         }
-        
         .submit-btn:hover:not(:disabled) {
             background: #1a202c;
         }
-        
         .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+            opacity: 0.5;
         }
-        
         #result {
             background: #1a202c;
             color: #48bb78;
             padding: 16px;
             border-radius: 8px;
-            margin-top: 16px;
-            white-space: pre-wrap;
-            font-family: 'Courier New', monospace;
+            font-family: monospace;
             font-size: 12px;
-            max-height: 350px;
+            white-space: pre-wrap;
+            max-height: 400px;
             overflow-y: auto;
+            margin-top: 16px;
             display: none;
         }
-        
         #result.show { display: block; }
-        
         .note {
             background: #fef5e7;
-            border-left: 3px solid #f59e0b;
+            border-left: 3px solid #f39c12;
             padding: 12px;
-            border-radius: 6px;
             margin: 12px 0;
             font-size: 14px;
+            color: #856404;
         }
-        
-        /* Features */
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-        }
-        
-        .feature {
-            background: #f7fafc;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #e2e8f0;
-        }
-        
-        .feature h3 {
-            color: #2d3748;
-            font-size: 1em;
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-        
-        .feature p {
-            color: #4a5568;
-            font-size: 0.9em;
-            line-height: 1.5;
-        }
-        
-        .tech-list {
+        .tech {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 16px;
+            margin: 16px 0;
         }
-        
-        .tech-item {
+        .tech span {
             background: #2d3748;
             color: white;
-            padding: 6px 14px;
-            border-radius: 16px;
+            padding: 6px 12px;
+            border-radius: 4px;
             font-size: 13px;
-            font-weight: 500;
-        }
-        
-        .links {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            margin-top: 24px;
-        }
-        
-        .link-btn {
-            color: #2d3748;
-            text-decoration: none;
-            font-weight: 500;
-            padding: 8px 16px;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-        }
-        
-        .link-btn:hover {
-            background: #edf2f7;
-        }
-        
-        @media (max-width: 768px) {
-            .header h1 { font-size: 1.8em; }
-            .card { padding: 24px; }
-            .features { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>Credit Scoring MLOps Platform</h1>
-        <p>Real-time credit decisioning with explainable AI</p>
+        <p>Real-time credit decisions with explainable AI</p>
+        <div class="links">
+            <a href="https://claritypay-mlops-demo.onrender.com/docs" class="link-btn" target="_blank">API Docs</a>
+            <a href="https://github.com/samkul-swe/claritypay-mlops-demo" class="link-btn" target="_blank">GitHub</a>
+        </div>
     </div>
 
     <div class="container">
+        
+        <!-- How It Works -->
+        <div class="card">
+            <h2>How It Works</h2>
+            <div class="flow">
+                <div class="flow-step">
+                    <h3>1. Submit Application</h3>
+                    <p>Send credit application data (age, income, debt, credit history)</p>
+                </div>
+                <div class="flow-step">
+                    <h3>2. Model Prediction</h3>
+                    <p>XGBoost model analyzes data and predicts default risk</p>
+                </div>
+                <div class="flow-step">
+                    <h3>3. Credit Decision</h3>
+                    <p>System calculates credit score and recommends loan terms</p>
+                </div>
+                <div class="flow-step">
+                    <h3>4. Explanation</h3>
+                    <p>Shows why the decision was made (compliance requirement)</p>
+                </div>
+            </div>
+        </div>
+
         <!-- Live Demo -->
         <div class="card">
-            <h2>Live Demo</h2>
-            <div class="demo-buttons">
-                <button class="demo-btn" onclick="loadExample('good')">Prime Credit</button>
-                <button class="demo-btn" onclick="loadExample('moderate')">Near-Prime</button>
-                <button class="demo-btn" onclick="loadExample('risky')">Subprime</button>
-            </div>
-            
-            <textarea id="request">{
-  "applicant_id": "DEMO_001",
+            <h2>Try It Live</h2>
+            <div class="demo-box">
+                <p style="margin-bottom: 12px; color: #4a5568;">Select a credit profile:</p>
+                <div class="demo-btns">
+                    <button class="demo-btn" onclick="loadExample('good')">Good Credit (750+)</button>
+                    <button class="demo-btn" onclick="loadExample('moderate')">Average Credit (650-750)</button>
+                    <button class="demo-btn" onclick="loadExample('risky')">Poor Credit (<650)</button>
+                </div>
+                
+                <textarea id="request">{
+  "applicant_id": "DEMO",
   "age": 35,
   "annual_income": 65000,
   "debt_to_income_ratio": 0.35,
@@ -229,79 +227,56 @@
   "num_credit_inquiries": 2,
   "purchase_amount": 3500
 }</textarea>
-            
-            <button class="submit-btn" onclick="makePrediction()" id="submitBtn">
-                Get Credit Decision
-            </button>
-            
-            <div class="note">
-                First request takes 30-60s (server wakeup). Subsequent requests are instant.
+                
+                <button class="submit-btn" onclick="makePrediction()" id="btn">
+                    Get Credit Decision
+                </button>
+                
+                <div class="note">
+                    First request takes 30-60 seconds (server wakes up). After that, responses are instant.
+                </div>
+                
+                <div id="result"></div>
             </div>
-            
-            <div id="result"></div>
         </div>
 
-        <!-- What's Built -->
+        <!-- What's Inside -->
         <div class="card">
-            <h2>What's Implemented</h2>
-            <div class="features">
-                <div class="feature">
-                    <h3>Credit Scoring Model</h3>
-                    <p>XGBoost classifier trained on 10,000 applications with 85% accuracy</p>
+            <h2>What's Included</h2>
+            <div class="flow">
+                <div class="flow-step">
+                    <h3>ML Model</h3>
+                    <p>XGBoost trained on 10K applications, 85% accuracy, real-time inference</p>
                 </div>
-                <div class="feature">
-                    <h3>Real-time API</h3>
-                    <p>FastAPI with automatic documentation and input validation</p>
+                <div class="flow-step">
+                    <h3>Production API</h3>
+                    <p>FastAPI with automatic docs, input validation, health checks</p>
                 </div>
-                <div class="feature">
-                    <h3>Explainability</h3>
-                    <p>Feature-based explanations for every credit decision</p>
+                <div class="flow-step">
+                    <h3>Cloud Deploy</h3>
+                    <p>Docker containerized, deployed to Render, AWS S3 integration</p>
                 </div>
-                <div class="feature">
-                    <h3>MLflow Tracking</h3>
-                    <p>Experiment logging, model versioning, and metadata</p>
-                </div>
-                <div class="feature">
-                    <h3>Docker Deployment</h3>
-                    <p>Containerized application deployed to Render cloud</p>
-                </div>
-                <div class="feature">
-                    <h3>Risk-Based Terms</h3>
-                    <p>Dynamic APR and payment terms based on credit score</p>
-                </div>
-                <div class="feature">
-                    <h3>AI Agent</h3>
-                    <p>Claude-powered analysis for lending decisions (rule-based fallback)</p>
-                </div>
-                <div class="feature">
-                    <h3>Cloud Architecture</h3>
-                    <p>AWS S3 data lake + Databricks Community Edition integration</p>
+                <div class="flow-step">
+                    <h3>Data Platform</h3>
+                    <p>AWS S3 data lake, Databricks training, MongoDB logging (ready)</p>
                 </div>
             </div>
         </div>
 
         <!-- Tech Stack -->
         <div class="card">
-            <h2>Technology Stack</h2>
-            <div class="tech-list">
-                <span class="tech-item">Python 3.10</span>
-                <span class="tech-item">XGBoost 3.2</span>
-                <span class="tech-item">FastAPI</span>
-                <span class="tech-item">MLflow</span>
-                <span class="tech-item">Docker</span>
-                <span class="tech-item">Scikit-learn</span>
-                <span class="tech-item">Pydantic</span>
-                <span class="tech-item">Render</span>
+            <h2>Technology</h2>
+            <div class="tech">
+                <span>Python</span>
+                <span>XGBoost</span>
+                <span>FastAPI</span>
+                <span>Docker</span>
+                <span>AWS S3</span>
+                <span>Databricks</span>
+                <span>MLflow</span>
             </div>
         </div>
 
-        <!-- Links -->
-        <div class="card" style="text-align: center;">
-            <div class="links">
-                <a href="https://claritypay-mlops-demo.onrender.com/docs" class="link-btn" target="_blank">API Docs</a>
-                <a href="https://github.com/samkul-swe/claritypay-mlops-demo" class="link-btn" target="_blank">Source Code</a>
-            </div>
-        </div>
     </div>
 
     <script>
@@ -309,31 +284,31 @@
         
         const examples = {
             good: {
-                applicant_id: "PRIME_001",
+                applicant_id: "GOOD",
                 age: 45,
-                annual_income: 95000,
+                annual_income: 90000,
                 debt_to_income_ratio: 0.22,
                 num_credit_lines: 10,
                 num_late_payments: 0,
                 credit_utilization: 0.25,
                 months_since_last_delinquency: 72,
                 num_credit_inquiries: 1,
-                purchase_amount: 6000
+                purchase_amount: 5000
             },
             risky: {
-                applicant_id: "SUBPRIME_001",
+                applicant_id: "RISKY",
                 age: 24,
-                annual_income: 32000,
+                annual_income: 30000,
                 debt_to_income_ratio: 1.1,
-                num_credit_lines: 3,
-                num_late_payments: 4,
-                credit_utilization: 0.92,
+                num_credit_lines: 2,
+                num_late_payments: 5,
+                credit_utilization: 0.95,
                 months_since_last_delinquency: 2,
-                num_credit_inquiries: 7,
-                purchase_amount: 7500
+                num_credit_inquiries: 8,
+                purchase_amount: 8000
             },
             moderate: {
-                applicant_id: "NEAR_PRIME_001",
+                applicant_id: "MODERATE",
                 age: 36,
                 annual_income: 62000,
                 debt_to_income_ratio: 0.42,
@@ -342,7 +317,7 @@
                 credit_utilization: 0.58,
                 months_since_last_delinquency: 14,
                 num_credit_inquiries: 3,
-                purchase_amount: 4200
+                purchase_amount: 4000
             }
         };
 
@@ -352,7 +327,7 @@
 
         async function makePrediction() {
             const resultDiv = document.getElementById('result');
-            const btn = document.getElementById('submitBtn');
+            const btn = document.getElementById('btn');
             
             btn.disabled = true;
             btn.textContent = 'Processing...';
@@ -362,7 +337,6 @@
             
             try {
                 const request = JSON.parse(document.getElementById('request').value);
-                
                 const response = await fetch(`${API_URL}/predict`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -374,7 +348,7 @@
                 const result = await response.json();
                 resultDiv.textContent = JSON.stringify(result, null, 2);
             } catch (error) {
-                resultDiv.textContent = `Error: ${error.message}`;
+                resultDiv.textContent = `Error: ${error.message}\n\nFirst request may take 60 seconds as server wakes up.`;
             } finally {
                 btn.disabled = false;
                 btn.textContent = 'Get Credit Decision';
