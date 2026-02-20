@@ -2,10 +2,6 @@
 
 Production machine learning system for point-of-sale credit decisioning.
 
-**🌐 Live Demo:** https://samkul-swe.github.io/claritypay-mlops-demo  
-**📚 API Docs:** https://claritypay-mlops-demo.onrender.com/docs  
-**💻 GitHub:** https://github.com/samkul-swe/claritypay-mlops-demo
-
 ---
 
 ## What This Does
@@ -81,7 +77,7 @@ GitHub → Render (Docker build) → Live API
 ```
 
 **Data Storage:**
-- AWS S3 bucket: `claritypay-mlops-demo-data`
+- AWS S3 bucket
 - Model artifacts stored in S3
 - Training data in S3
 
@@ -95,13 +91,8 @@ GitHub → Render (Docker build) → Live API
 
 ## Quick Start
 
-**Try Online:**  
-https://samkul-swe.github.io/claritypay-mlops-demo
-
 **Run Locally:**
 ```bash
-git clone https://github.com/samkul-swe/claritypay-mlops-demo.git
-cd claritypay-mlops-demo
 docker build -t credit-scoring .
 docker run -p 8000:8000 credit-scoring
 # Visit: http://localhost:8000/docs
